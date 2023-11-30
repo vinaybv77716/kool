@@ -21,7 +21,7 @@ pipeline{
         stage("Build_a_image"){
             steps{
                 echo 'Build_a_image_using_Dockerfile'
-                sh 'docker build -t bvvinay/kool:latest'
+                sh 'docker build -t bvvinay/kool:latest . '
                 
             }
         }
