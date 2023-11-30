@@ -41,7 +41,7 @@ pipeline{
          stage("Apply_the_deployment"){
             steps{
                 echo 'Apply_the_deployment_done'
-                sh   'kubectl apply -f deployment.yaml'
+                sh   'sudo kubectl apply -f deployment.yaml'
             }
         }
 
@@ -49,7 +49,7 @@ pipeline{
          stage("Apply_the_svc"){
             steps{
                 echo 'svc_done'
-              sh 'kubectl apply -f service.yaml'
+              sh 'sudo kubectl apply -f service.yaml'
             }
         }
 
