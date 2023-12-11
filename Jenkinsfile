@@ -42,7 +42,7 @@ pipeline{
             steps{
                 echo 'Apply_the_deployment_done'
               //  sh   ' kubectl apply -f deployment.yaml'
-                sh 'sudo  chmod 777 kool.sh'
+                sh './ kool.sh'
             }
         }
 
@@ -50,7 +50,7 @@ pipeline{
          stage("Apply_the_svc"){
             steps{
                 echo 'svc_done'
-              sh ' kubectl apply -f service.yaml'
+             // sh ' kubectl apply -f service.yaml'
             }
         }
 
