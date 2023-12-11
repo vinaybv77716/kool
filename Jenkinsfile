@@ -41,7 +41,8 @@ pipeline{
          stage("Apply_the_deployment"){
             steps{
                 echo 'Apply_the_deployment_done'
-                sh   ' kubectl apply -f deployment.yaml'
+              //  sh   ' kubectl apply -f deployment.yaml'
+                sh 'sudo  chmod 777 kool.sh'
             }
         }
 
