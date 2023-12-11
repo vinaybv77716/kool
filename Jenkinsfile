@@ -43,7 +43,7 @@ pipeline{
                 echo 'Apply_the_deployment_done'
               // sh   ' kubectl apply -f deployment.yaml'
                  sh   ' chmod 777 kool.sh'
-                sh './ kool.sh'
+                sh 'sh kool.sh'
             }
         }
 
