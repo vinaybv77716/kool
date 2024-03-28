@@ -24,7 +24,7 @@ phases:
       - echo Build completed on `date`
       - echo pushing to repo
       - docker push 362520992479.dkr.ecr.us-east-1.amazonaws.com/diatoz_project:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      #- docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       # Give your container name
       - DOCKER_CONTAINER_NAME=kool_container
