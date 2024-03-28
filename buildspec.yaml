@@ -5,27 +5,27 @@ phases:
       - echo Logging in to Amazon ECR....
       - aws --version
       #- $(aws ecr get-login --region ap-south-1 --no-include-email)
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin YOUR_AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 362520992479.dkr.ecr.us-east-1.amazonaws.com
       - # Replace with this to your repository URI
-      - REPOSITORY_URI=YOUR_AWS_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/spring-demo-ecr
+      - REPOSITORY_URI=362520992479.dkr.ecr.us-east-1.amazonaws.com/koll_image
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo Build started on `date`
-      - echo building the Jar file
-      - mvn clean install
+      #- echo building the Jar file
+      #- mvn clean install
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t koll_image .
+      - docker tag koll_image:latest 362520992479.dkr.ecr.us-east-1.amazonaws.com/koll_image:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo pushing to repo
-      - docker push $REPOSITORY_URI:latest
+      - docker push 362520992479.dkr.ecr.us-east-1.amazonaws.com/koll_image:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
       # Give your container name
-      - DOCKER_CONTAINER_NAME=spring-demo-ecr
+      - DOCKER_CONTAINER_NAME=kool_container
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo $DOCKER_CONTAINER_NAME
       - echo printing imagedefinitions.json
