@@ -101,7 +101,7 @@ jobs:
         run: |
           echo "#######   kubeconfig    ######"
           aws eks update-kubeconfig  --region us-east-1 --name my-eks-cluster
-          lubectl get pods -A
+          kubectl get pods -A
       - name: Install Helm if not present
         run: |
           echo "#######   Checking Helm   ######"
