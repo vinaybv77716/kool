@@ -68,7 +68,4 @@ jobs:
       - name: terraform initialization 
         run: |
          cd terraform-eks/ && terraform init 
-         ls
-         pwd
-         ls terraform-eks/
-         #cd terraform-eks/ && terraform plan
+         terraform plan
