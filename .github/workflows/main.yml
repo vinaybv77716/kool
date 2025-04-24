@@ -96,11 +96,20 @@ jobs:
           else
             echo "kubectl is already installed: $(kubectl version --short --client)"
           fi
-      
+      - name: Install eksctl if not present
+        run: |
+         echo "#######   eksctl    ######"
+         if ! command -v eksctl &> /dev/null; then
+         echo "eksctl not found. Installing..."
+         curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+         sudo mv /tmp/eksctl /usr/local/bin
+         else
+         echo "eksctl is already installed: $(eksctl version)"
+         fi
       - name: update kubeconfig
         run: |
           echo "#######   kubeconfig    ######"
-          aws eks update-kubeconfig  --region us-east-1 --name my-eks-cluster
+          aws eks  update-kubeconfig --region us-east-1 --name my-eks-cluster
           kubectl get pods -A
       - name: Install Helm if not present
         run: |
