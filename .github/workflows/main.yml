@@ -10,6 +10,7 @@ jobs:
         run: |
           rm -rf kool
           git clone https://github.com/vinaybv77716/kool.git
+          git clone https://github.com/vinaybv77716/terraform-eks.git
    
       - name: Check and install Docker if not present
         run: |
@@ -42,6 +43,18 @@ jobs:
           else
             echo "AWS CLI is already installed"
           fi
+      - name: Check and install Terraform if not present
+        run: |
+          if ! command -v terraform &> /dev/null
+          then
+            echo "Terraform not found. Installing Terraform..."
+            sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+            echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+            sudo apt-get update && sudo apt-get install terraform -y
+          else
+            echo "Terraform is already installed"
+          fi
       - name: Clean up dangling images
         run: sudo apt update
       - name: Configure AWS-cli
@@ -61,4 +74,14 @@ jobs:
           docker build -t kool-vinay kool/.
           docker tag kool-vinay:latest 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest
           docker push 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
+      - name: Create EKS cluster using terraform       
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: terraform initialization 
+        run: cd terraform-eks/ && terraform init 
+    #  - name: terraform deployment
+    #    run: cd /home/ubuntu/actions-runner/_work/diatoz_assinment/diatoz_assinment/diatoz_assinment/devops/ && terraform apply -var="tag=latest"  -auto-approve
+
      
