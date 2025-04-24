@@ -43,7 +43,7 @@ jobs:
             echo "AWS CLI is already installed"
           fi
       - name: Clean up dangling images
-        run: docker system prune -af
+        run: sudo apt update
       - name: Configure AWS-cli
         run: |
           # aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && \
@@ -55,9 +55,9 @@ jobs:
 
       - name: build docker image and push to ecr repo
         run: |
-          sudo apt update
-          sudo chown $USER /var/run/docker.sock
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 890405391444.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t nodeproj diatoz_assinment/.
-          docker tag nodeproj:latest 890405391444.dkr.ecr.us-east-1.amazonaws.com/nodeproj:latest
+          # sudo apt update
+          # sudo chown $USER /var/run/docker.sock
+          # aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 890405391444.dkr.ecr.us-east-1.amazonaws.com
+          # docker build -t nodeproj diatoz_assinment/.
+          # docker tag nodeproj:latest 890405391444.dkr.ecr.us-east-1.amazonaws.com/nodeproj:latest
           docker push 890405391444.dkr.ecr.us-east-1.amazonaws.com/nodeproj:latest          
