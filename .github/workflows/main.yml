@@ -95,5 +95,5 @@ jobs:
       - name: update kubeconfig
         run: |
           echo "#######   kubeconfig    ######"
-          aws eks --region us-east-1 update-kubeconfig --name eks-cluster-vinay
+          aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
           kubectl get pods -A
