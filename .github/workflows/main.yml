@@ -10,7 +10,7 @@ jobs:
      - name: Check out the repo
        run: rm -rf diatoz_assinment && git clone https://github.com/vinaybv77716/diatoz_assinment.git
      - name: Check docker version
-       run: docker --version
+       run: sudo apt-get update
      # - name: build docker image and push to ecr repo
      #   run: |
      #      sudo apt update
