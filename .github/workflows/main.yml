@@ -9,6 +9,7 @@ jobs:
       - name: Check out the repo
         run: |
           rm -rf kool
+          rm -rf terraform-eks
           git clone https://github.com/vinaybv77716/kool.git
           git clone https://github.com/vinaybv77716/terraform-eks.git
    
