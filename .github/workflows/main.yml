@@ -4,7 +4,7 @@ jobs:
   clone:
     runs-on: self-hosted
     steps:
-      - name: Clone kool rep
+      - name: Clone kool repoo
         run: |
           git clone https://github.com/vinaybv77716/kool.git
       - name: Clone terraform-eks repo
