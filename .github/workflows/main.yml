@@ -60,7 +60,7 @@ jobs:
           aws configure set default.region "us-east-1"
           aws configure set output json
           echo "#######  testing  #######"
-          aws s3 ls  
+          # aws s3 ls  
       - name: build docker image and push to ecr repo
         run: |
           sudo apt update
