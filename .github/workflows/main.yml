@@ -6,6 +6,8 @@ jobs:
     steps:
       - name: Clone kool repo
         run: |
+          rm -rf kool
+          rm -rf terraform-eks
           git clone https://github.com/vinaybv77716/kool.git
       - name: Clone terraform-eks repo
         run: |
