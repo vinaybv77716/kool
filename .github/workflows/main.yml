@@ -31,31 +31,4 @@ jobs:
           fi
 
           
-      - name: Clean up dangling images
-        run: sudo apt update
-      - name: Configure AWS-cli
-        run: |
-          echo "#######  testing  #######"
-          aws s3 ls
-
-      - name: build docker image and push to ecr repo
-        run: |
-          sudo apt update
-          sudo chown $USER /var/run/docker.sock
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 200901485389.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t kool-vinay kool/.
-          docker tag kool-vinay:latest 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest
-          docker push 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
-      - name: Create EKS cluster using terraform       
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: terraform initialization 
-        run: cd terraform-eks/ && terraform init 
-    #  - name: terraform deployment
-    #    run: cd /home/ubuntu/actions-runner/_work/diatoz_assinment/diatoz_assinment/diatoz_assinment/devops/ && terraform apply -var="tag=latest"  -auto-approve
-
-     
-
       
