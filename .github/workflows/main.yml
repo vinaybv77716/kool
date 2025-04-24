@@ -12,37 +12,6 @@ jobs:
           git clone https://github.com/vinaybv77716/kool.git
           git clone https://github.com/vinaybv77716/terraform-eks.git
    
-      - name: Check and install Docker if not present
-        run: |
-          if ! command -v docker &> /dev/null
-          then
-            echo "Docker not found. Installing Docker..."
-            sudo apt-get update
-            sudo apt-get install -y ca-certificates curl gnupg
-            sudo install -m 0755 -d /etc/apt/keyrings
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-            echo \
-              "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-              $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-              sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-            sudo apt-get update
-            sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-          else
-            echo "Docker is already installed"
-          fi
-
-      - name: Check and install AWS CLI if not present
-        run: |
-          if ! command -v aws &> /dev/null
-          then
-            echo "AWS CLI not found. Installing AWS CLI..."
-            sudo apt install unzip -y
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-          else
-            echo "AWS CLI is already installed"
-          fi
       - name: Check and install Terraform if not present
         run: |
           if ! command -v terraform &> /dev/null
@@ -55,33 +24,5 @@ jobs:
           else
             echo "Terraform is already installed"
           fi
-      - name: Clean up dangling images
-        run: sudo apt update
-      - name: Configure AWS-cli
-        run: |
-          # aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && \
-          # aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && \
-          # aws configure set default.region ${{ secrets.AWS_REGION }} && \
-          # aws configure set output json
-          echo "#######  testing  #######"
-          aws s3 ls
 
-      - name: build docker image and push to ecr repo
-        run: |
-          sudo apt update
-          sudo chown $USER /var/run/docker.sock
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 200901485389.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t kool-vinay kool/.
-          docker tag kool-vinay:latest 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest
-          docker push 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
-      - name: Create EKS cluster using terraform       
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-      - name: terraform initialization 
-        run: cd terraform-eks/ && terraform init 
-    #  - name: terraform deployment
-    #    run: cd /home/ubuntu/actions-runner/_work/diatoz_assinment/diatoz_assinment/diatoz_assinment/devops/ && terraform apply -var="tag=latest"  -auto-approve
-
-     
+      
