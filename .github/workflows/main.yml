@@ -12,7 +12,6 @@ jobs:
           else
             echo "kool repo already exists. Skipping clone."
           fi
-          rm -rf kool
       - name: Clone terraform-eks repo
         run: |
           if [ ! -d "terraform-eks" ]; then
@@ -20,8 +19,7 @@ jobs:
             git clone https://github.com/vinaybv77716/terraform-eks.git
           else
             echo "terraform-eks repo already exists. Skipping clone."
-          fi     
-          rm -rf terraform-eks
+          fi  
       - name: Check and install Terraform if not present
         run: |
           if ! command -v terraform &> /dev/null
