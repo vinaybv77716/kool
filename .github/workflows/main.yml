@@ -10,9 +10,7 @@ jobs:
         run: |
           rm -rf kool
           git clone https://github.com/vinaybv77716/kool.git
-          ls
-          pwd
-
+   
       - name: Check and install Docker if not present
         run: |
           if ! command -v docker &> /dev/null
@@ -57,11 +55,10 @@ jobs:
 
       - name: build docker image and push to ecr repo
         run: |
-          # sudo apt update
-          # sudo chown $USER /var/run/docker.sock
-          # aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 890405391444.dkr.ecr.us-east-1.amazonaws.com
-          # docker build -t nodeproj diatoz_assinment/.
-          # docker tag nodeproj:latest 890405391444.dkr.ecr.us-east-1.amazonaws.com/nodeproj:latest
-          #docker push 890405391444.dkr.ecr.us-east-1.amazonaws.com/nodeproj:latest 
-          pwd
-          ls
+          sudo apt update
+          sudo chown $USER /var/run/docker.sock
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 200901485389.dkr.ecr.us-east-1.amazonaws.com
+          docker build -t kool-vinay kool/.
+          docker tag kool-vinay:latest 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest
+          docker push 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
+     
