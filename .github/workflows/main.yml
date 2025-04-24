@@ -2,7 +2,7 @@ name: Clone Repos
 on: [push]
 jobs:
   clone:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Clone kool repo
         run: |
