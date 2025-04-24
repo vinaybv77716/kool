@@ -8,8 +8,10 @@ jobs:
     steps:
       - name: Check out the repo
         run: |
-          rm -rf diatoz_assinment
-          git clone https://github.com/vinaybv77716/diatoz_assinment.git
+          rm -rf kool
+          git clone https://github.com/vinaybv77716/kool.git
+          ls
+          pwd
 
       - name: Check and install Docker if not present
         run: |
