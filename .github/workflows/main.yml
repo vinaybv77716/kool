@@ -66,4 +66,6 @@ jobs:
           docker push 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
           docker rmi 200901485389.dkr.ecr.us-east-1.amazonaws.com/kool-vinay:latest 
       - name: terraform initialization 
-        run: cd terraform-eks/ && terraform init        
+        run: |
+         cd terraform-eks/ && terraform init 
+         cd terraform-eks/ && terraform plan
