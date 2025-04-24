@@ -6,12 +6,20 @@ jobs:
     steps:
       - name: Clone kool repo
         run: |
-          rm -rf kool
-          rm -rf terraform-eks
-          git clone https://github.com/vinaybv77716/kool.git
+          if [ ! -d "kool" ]; then
+            echo "Cloning kool repo..."
+            git clone https://github.com/vinaybv77716/kool.git
+          else
+            echo "kool repo already exists. Skipping clone."
+          fi
       - name: Clone terraform-eks repo
         run: |
-          git clone https://github.com/vinaybv77716/terraform-eks.git     
+          if [ ! -d "terraform-eks" ]; then
+            echo "Cloning terraform-eks repo..."
+            git clone https://github.com/vinaybv77716/terraform-eks.git
+          else
+            echo "terraform-eks repo already exists. Skipping clone."
+          fi     
       - name: Check and install Terraform if not present
         run: |
           if ! command -v terraform &> /dev/null
