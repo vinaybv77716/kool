@@ -117,7 +117,7 @@ jobs:
       - name: OIDC and IAM Service Account setup if not already done
         run: |
           echo "#######   OIDC Setup   ######"
-          OIDC_CHECK=$(aws eks describe-cluster --name eks-cluster-vinay --region us-east-1 --query "cluster.identity.oidc.issuer" --output text)
+          OIDC_CHECK=$(aws eks describe-cluster --name my-eks-cluster --region us-east-1 --query "cluster.identity.oidc.issuer" --output text)
       
           if [ "$OIDC_CHECK" != "None" ]; then
             echo "OIDC provider already associated: $OIDC_CHECK"
