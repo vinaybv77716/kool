@@ -95,5 +95,66 @@ jobs:
       - name: update kubeconfig
         run: |
           echo "#######   kubeconfig    ######"
-          aws eks --region us-east-1 update-kubeconfig --name my-eks-cluster
-          kubectl get pods -A
+          aws eks --region us-east-1 update-kubeconfig --name eks-cluster-vinay
+          lubectl get pods -A
+      - name: Install Helm if not present
+        run: |
+          echo "#######   Checking Helm   ######"
+          if ! command -v helm &> /dev/null; then
+            echo "Helm not found. Installing..."
+             curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+             chmod 700 get_helm.sh
+             ./get_helm.sh
+          else
+            echo "Helm already installed: $(helm version --short)"
+          fi
+      
+      - name: OIDC and IAM Service Account setup if not already done
+        run: |
+          echo "#######   OIDC Setup   ######"
+          OIDC_CHECK=$(aws eks describe-cluster --name eks-cluster-vinay --region us-east-1 --query "cluster.identity.oidc.issuer" --output text)
+      
+          if [ "$OIDC_CHECK" != "None" ]; then
+            echo "OIDC provider already associated: $OIDC_CHECK"
+          else
+            echo "Associating OIDC provider..."
+            eksctl utils associate-iam-oidc-provider --cluster my-eks-cluster --approve --region us-east-1
+          fi
+      
+          # Check if service account exists
+          if kubectl get sa eks-admin-sa -n kube-system > /dev/null 2>&1; then
+            echo "Service account 'eks-admin-sa' already exists in kube-system namespace."
+          else
+            echo "Creating service account and attaching policies..."
+            eksctl create iamserviceaccount --name vinay --namespace kube-system --cluster my-eks-cluster --role-name vinay-role \
+            --attach-policy-arn arn:aws:iam::aws:policy/AdministratorAccess --approve --override-existing-serviceaccounts
+          fi
+      
+          # Output service account info
+          kubectl get sa vinay -n kube-system -o yaml
+      - name: Add EKS Helm repo if not already added
+        run: |
+          echo "#######   Helm repo check   ######"
+          if helm repo list | grep -q '^eks'; then
+            echo "EKS Helm repo already exists"
+          else
+            echo "Adding EKS Helm repo"
+            helm repo add eks https://aws.github.io/eks-charts
+          fi
+          helm repo update
+      
+      - name: Install AWS Load Balancer Controller if not already installed
+        run: |
+          echo "#######   ALB Controller install check   ######"
+          if helm list -n kube-system | grep -q 'aws-load-balancer-controller'; then
+            echo "ALB Controller already installed"
+          else
+            echo "Installing ALB Controller"
+            helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
+              -n kube-system \
+              --set clusterName=my-eks-cluster \
+              --set serviceAccount.create=false \
+              --set serviceAccount.name=vinay
+          fi
+      
+      
