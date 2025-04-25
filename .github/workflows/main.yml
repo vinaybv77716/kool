@@ -84,7 +84,7 @@ jobs:
         run: |
          cd terraform-eks/ && terraform init 
          terraform plan
-        #  terraform apply 
+         terraform apply  -auto-approve
       - name: Install kubectl if not present
         run: |
           echo "#######   kubectl    ######"
