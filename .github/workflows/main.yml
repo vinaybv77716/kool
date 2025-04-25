@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "#######   Installing prerequisites   ######"
           sudo apt-get update
-          sudo sh terraform-eks/prerequisites.sh 
+          sudo ./ terraform-eks/prerequisites.sh 
     
       
       - name: Configure AWS CLI
