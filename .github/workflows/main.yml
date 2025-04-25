@@ -1,4 +1,4 @@
-name: Clone Repos
+name: Clone 
 on: [push]
 jobs:
   clone:
